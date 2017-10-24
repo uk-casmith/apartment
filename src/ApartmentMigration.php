@@ -2,24 +2,25 @@
 
 namespace BuildEmpire\Apartment;
 
-use Illuminate\Database\Migrations\Migration;
-use BuildEmpire\Apartment\Helpers\ApartmentHelpers;
 use BuildEmpire\Apartment\Exceptions\MissingTableNameInMigrationException;
+use BuildEmpire\Apartment\Helpers\ApartmentHelpers;
+use Illuminate\Database\Migrations\Migration;
 
 class ApartmentMigration extends Migration
 {
-    protected $schemas = [];
+    protected $schemas  = [];
     protected $fileName = false;
     protected $originalTable;
+    protected $currentSchemaName;
 
     /**
      * ApartmentMigration constructor.
      */
     public function __construct()
     {
-        $schema = new Schema();
-        $this->schemas = $schema->getAllSchemas();
-        $this->fileName = $this->getMigrationFileName();
+        $schema              = new Schema();
+        $this->schemas       = $schema->getAllSchemas();
+        $this->fileName      = $this->getMigrationFileName();
         $this->originalTable = $this->table;
     }
 
@@ -83,7 +84,6 @@ class ApartmentMigration extends Migration
         }
     }
 
-
     /**
      * Throw an exception if no table is specified and migration has been ran.
      *
@@ -118,7 +118,7 @@ class ApartmentMigration extends Migration
     protected function hasMigrationRan($schemaName)
     {
 
-        return (boolean)app('db')
+        return (boolean) app('db')
             ->table(ApartmentHelpers::getSchemaTableFormat($schemaName, 'migrations'))
             ->where('migration', '=', $this->fileName)
             ->count();
@@ -131,7 +131,8 @@ class ApartmentMigration extends Migration
      */
     private function setSchemaTable($schemaName)
     {
-        $this->table = ApartmentHelpers::getSchemaTableFormat($schemaName, $this->originalTable);
+        $this->currentSchemaName = $schemaName;
+        $this->table             = ApartmentHelpers::getSchemaTableFormat($schemaName, $this->originalTable);
     }
 
     /**
@@ -142,7 +143,7 @@ class ApartmentMigration extends Migration
         app('db')
             ->table(ApartmentHelpers::getSchemaTableFormat($schemaName, 'migrations'))
             ->insert([
-                'migration' => $this->fileName
+                'migration' => $this->fileName,
             ]);
     }
 
@@ -165,10 +166,20 @@ class ApartmentMigration extends Migration
     protected function getMigrationFileName()
     {
         $childClassName = get_called_class();
-        $reflection = new \ReflectionClass($childClassName);
-        $fileInfo = pathinfo($reflection->getFileName());
+        $reflection     = new \ReflectionClass($childClassName);
+        $fileInfo       = pathinfo($reflection->getFileName());
 
         return $fileInfo['filename'];
+    }
+
+    /**
+     * Return the current schema name.
+     *
+     * @return mixed
+     */
+    protected function getCurrentSchemaName()
+    {
+        return $this->currentSchemaName;
     }
 
 }

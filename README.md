@@ -163,6 +163,24 @@ protected $table = 'products';
 The schemas in this example are already pointed to the $this->table property so we don't need to change anything related 
 to the Schema calls.
 
+#### Referencing the current schema within a migration
+
+Some migration operations require you to state the table you want to perform migrations on. In these cases you will need 
+to prefix the schema name to the table. Apartment provides the `$this->getCurrentSchemaName();` method to return the 
+current schema name.
+   
+A common example of when this is useful is with foreign keys:
+
+```
+$schemaName = $this->getCurrentSchemaName();
+Schema::create($this->table, function (Blueprint $table) use ($schemaName) {
+    $table->increments('id');
+    $table->foreign('order_id')->references('id')->on($schemaName . '.orders');
+});
+```
+
+This will create a forigen key on the current schema.
+
 Migrating an Apartment
 ----------------------
 

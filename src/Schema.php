@@ -2,8 +2,6 @@
 
 namespace BuildEmpire\Apartment;
 
-use BuildEmpire\Apartment\Exceptions\NoSchemaSetException;
-use BuildEmpire\Apartment\Exceptions\NoSchemaFoundException;
 use BuildEmpire\Apartment\Exceptions\SchemaNameNotValidException;
 use BuildEmpire\Apartment\Helpers\ApartmentHelpers;
 
@@ -53,7 +51,7 @@ class Schema
      */
     public function doesSchemaExist($schemaName)
     {
-        return (boolean)$this->getSchemaObjectSet()->where('schemaname', '=', $schemaName)->count();
+        return (boolean) $this->getSchemaObjectSet()->where('schemaname', '=', $schemaName)->count();
     }
 
     /**
