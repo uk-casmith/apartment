@@ -2,13 +2,13 @@
 
 namespace BuildEmpire\Apartment;
 
+use BuildEmpire\Apartment\Exceptions\NoSchemaFoundException;
 use BuildEmpire\Apartment\Helpers\ApartmentHelpers;
 use Illuminate\Database\Eloquent\Model;
-use BuildEmpire\Apartment\Exceptions\NoSchemaFoundException;
 
 class ApartmentModel extends Model
 {
-    protected $apartment = false;
+    protected $apartment       = false;
     protected $apartmentSchema = false;
 
     /**
@@ -29,8 +29,8 @@ class ApartmentModel extends Model
      */
     public function __construct()
     {
-        $args = func_get_args();
-        $apartment = false;
+        $args                  = func_get_args();
+        $apartment             = false;
         $this->apartmentSchema = app()->make('BuildEmpire\Apartment\Schema');
 
         if (isset($args[0]['apartment'])) {
@@ -78,5 +78,14 @@ class ApartmentModel extends Model
     public function getApartment()
     {
         return $this->apartment;
+    }
+
+    /**
+     * @param $tableName
+     * @return string
+     */
+    public function prefixSchemaToTable($tableName)
+    {
+        return $this->apartment . '.' . $tableName;
     }
 }

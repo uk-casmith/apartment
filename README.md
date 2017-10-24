@@ -261,6 +261,14 @@ or
 $products->setApartment('nameofapartment');
 ```
 
+#### Eloquent Relationship
+
+You can prefix the schema name onto any relationship table using the method `$this->prefixSchemaToTable('asset_item_screen_item')`. 
+This can be useful for relationships like `belongsToMany` e.g.
+
+```
+return $this->belongsToMany('App\Customer', $this->prefixSchemaToTable('customer_order'));
+```
 
 Middleware
 ----------
