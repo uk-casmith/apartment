@@ -20,8 +20,13 @@
   },
   "autoload": {
     "psr-4": {
-      "BuildEmpire\\Apartment\\": "src/"
+      "BuildEmpire\\Apartment\\": "src/",
+      "BuildEmpire\\Apartment\\Tests\\": "tests/"
     }
   },
-  "version": "0.0.2"
+  "version": "0.0.2",
+  "require-dev": {
+    "phpunit/phpunit": "^6.4",
+    "mockery/mockery": "^1.0"
+  }
 }

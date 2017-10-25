@@ -3,7 +3,6 @@
 namespace BuildEmpire\Apartment;
 
 use BuildEmpire\Apartment\Exceptions\SchemaAlreadyExistsException;
-use BuildEmpire\Apartment\Exceptions\SchemaCannotBePublicException;
 use BuildEmpire\Apartment\Exceptions\SchemaDoesntExistException;
 use BuildEmpire\Apartment\Exceptions\SchemaNameNotValidException;
 use BuildEmpire\Apartment\Helpers\ApartmentHelpers;
@@ -31,8 +30,8 @@ class ArtisanApartmentCommands
      * Make an apartment's schema and run any existing apartment migrations.
      *
      * @param $schemaName
+     * @return bool
      * @throws SchemaAlreadyExistsException
-     * @throws SchemaCannotBePublicException
      * @throws SchemaNameNotValidException
      */
     public function makeSchema($schemaName)
@@ -58,12 +57,15 @@ class ArtisanApartmentCommands
 
             Migrator::runMigrations();
         });
+
+        return true;
     }
 
     /**
      * Drop an existing schema and all its data with cascade enabled.
      *
      * @param $schemaName
+     * @return bool
      * @throws SchemaDoesntExistException
      * @throws SchemaNameNotValidException
      */
@@ -80,6 +82,8 @@ class ArtisanApartmentCommands
         app('db')->transaction(function () use ($schemaName) {
             $this->deleteSchema($schemaName);
         });
+
+        return true;
     }
 
     /**

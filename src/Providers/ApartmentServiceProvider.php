@@ -2,12 +2,12 @@
 
 namespace BuildEmpire\Apartment\Providers;
 
-use BuildEmpire\Apartment\Commands\ApartmentMakeCommand;
 use BuildEmpire\Apartment\Commands\ApartmentDropCommand;
 use BuildEmpire\Apartment\Commands\ApartmentListCommand;
+use BuildEmpire\Apartment\Commands\ApartmentMakeCommand;
 use BuildEmpire\Apartment\Commands\ApartmentMigrationCommand;
-use Illuminate\Support\ServiceProvider;
 use BuildEmpire\Apartment\Schema;
+use Illuminate\Support\ServiceProvider;
 
 class ApartmentServiceProvider extends ServiceProvider
 {
